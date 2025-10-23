@@ -87,31 +87,52 @@ picoCTF{0000004d}
 - Nil.
 
 
-  ***
- # 3. 
+***
 
-Desc
+
+# 3. Valut-door-3
+
+This vault uses for-loops and byte arrays. The source code for this vault is here: VaultDoor3.java
 
 ## Solution:
+
+I opened the given script in VSCode to analyse it, and found that the program is basically taking an input, and then using 4 for loops to scramble it, and checking it against a given string.
+Our task is to find out what should be the input, knowing what the scrambled string looks like.
+
+We can see in the code that it expects us to give an input in the picoCTF{} form and ignores that part while scrambling.
+
+The program needs the vault password to be 32 charecters long.
+
+In the first for loop, the first 8(0-7) charecters are copied as is, without any changes.
+
+In the second for loop, the charecters from 8-15, are copied in the reverse order, which basically means that we need to replace the 8 with 15, 9 with 14...and so on.
+
+The third for loop is for scrambling the even positions between 16-31, this basically swaps the even positions in a manner similar to the second loop, i.e. 16 gets replaced with 30, 18 with 28.. and so on, for all even positions in the given range.
+
+The fourth for loop is for copying the odd positions between 16-31 as is, without any changes.
+
+
+<img width="854" height="998" alt="image" src="https://github.com/user-attachments/assets/265a1874-e0c7-4f72-80cd-ec17b527c8e1" />
+
+
+If we apply all of the above operations to the scrambled string `jU5t_a_sna_3lpm18g947_u_4_m9r54f` given in the code, we get a string `jU5t_a_s1mpl3_an4gr4m_4_u_79958f`
+Wrapping this in the picoCTF{} format, we get our flag.
 
 
 ## Flag:
 
 ```
-
+picoCTF{jU5t_a_s1mpl3_an4gr4m_4_u_79958f}
 ```
 
 ## Concepts learnt:
 
-- 
+- I learnt how to reverse engineer the logic behind a for loop, where given the end result, we need to go backwards and deconstruct the process.
 
 ## Notes:
 
--
+-I didn't go on any tangents per say, but initially I thought we have to get the input by changing the parameters of the for loop so that we could do it purely using the code, but then I realised that since it is only a 32 charecter string, in 4 chunks of 8 characters, understanding the logic and doing it manually will be faster.
+
 ## Resources:
 
 - Nil.
-
-
-***
-
