@@ -1,3 +1,72 @@
+# 2. Custom Encryption
+
+Can you get sense of this code file and write the function that will decode the given encrypted file content. Find the encrypted file here flag_info and code file might be good to analyze and get the flag. 
+
+## Solution:
+
+- First, I analysed the script we were given, and realised that it does 3 main things: generate a sharedkey, XOR scramble it, and then it into it's ASCII value and multiplies it with the shared key and the constant 311.
+
+- To decrypt this, we need to perform all of the operations in the reverse order.
+  
+- First, we must divide all the ciphers by the shared key and by 311.
+  
+- Since we are given the formula to calculate the shared key, we can use some modular arithmetic to calculate the share key, which gives us the value 22.
+  
+- So, we know that all the ciphers are to be divided by the value 22*311, that is 6842.
+  
+- After dividing all the ciphers by the value we obtained, we convert those into charecters using ASCII.
+  
+- We need to reverse the XOR scramble on the resulting string of charecters with the argument "trudeau" as given in the script.
+  
+- After this, we get the flag, but reversed. So we simply need to reverse it again to obtain the flag.
+  
+```
+cipher_list = [
+    61578, 109472, 437888, 6842, 0, 20526, 129998, 526834, 478940, 287364,
+    0, 567886, 143682, 34210, 465256, 0, 150524, 588412, 6842, 424204,
+    164208, 184734, 41052, 41052, 116314, 41052, 177892, 348942, 218944,
+    335258, 177892, 47894, 82104, 116314
+]
+key = "trudeau"
+K = 6842
+semi_cipher = ""
+for num in cipher_list:
+    ord_value = num // K
+    semi_cipher += chr(ord_value)
+reversed_flag = ""
+key_length = len(key)
+for i, char in enumerate(semi_cipher):
+    key_char = key[i % key_length]
+    decrypted_char = chr(ord(char) ^ ord(key_char))
+    reversed_flag += decrypted_char
+flag = reversed_flag[::-1]
+print(f"Flag: {flag}")
+```
+
+## Flag:
+
+```
+picoCTF{custom_d2cr0pt6d_49fbee5b}
+```
+
+## Concepts learnt:
+
+- I learnt how to backtrace complicated encryption, by analysing a script given to us.
+- I also learnt how to perform XOR operation to encrypt or decrypt a given string.
+
+## Notes:
+
+- An alternate "method" is that we don't need to have a line to explicitly calculate the XOR in the script, we can simply use the 'dynamic_xor_encrypt' function from the script given to us in the challenge description.
+
+
+## Resources:
+
+- Nil. 
+
+
+***
+
+
 # 3. mini RSA
 
 What happens if you have a small exponent? There is a twist though, we padded the plaintext so that (M ** e) is just barely larger than N. Let's decrypt this: ciphertext
