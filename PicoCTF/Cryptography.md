@@ -14,9 +14,9 @@ Can you get sense of this code file and write the function that will decode the 
   
 - So, we know that all the ciphers are to be divided by the value 22*311, that is 6842.
   
-- After dividing all the ciphers by the value we obtained, we convert those into charecters using ASCII.
+- After dividing all the ciphers by the value we obtained, we convert those into characters using ASCII.
   
-- We need to reverse the XOR scramble on the resulting string of charecters with the argument "trudeau" as given in the script.
+- We need to reverse the XOR scramble on the resulting string of characters with the argument "trudeau" as given in the script.
   
 - After this, we get the flag, but reversed. So we simply need to reverse it again to obtain the flag.
   
