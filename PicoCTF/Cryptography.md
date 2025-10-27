@@ -1,3 +1,121 @@
+# 1. RSA Oracle
+
+## Description
+Can you abuse the oracle? An attacker was able to intercept communications between a bank and a fintech company. They managed to get the message (ciphertext) and the password that was used to encrypt the message.
+
+Additional details will be available after launching your challenge instance.
+
+## Solution:
+
+- Since we cannot directly decrypt our password, what we will do is take 2^e mod n * m^e mod n which is basically 2m^e mod n.
+- We will get the program to decrypt this for us, which it will do since it is not same as password, and then divide it by 2.
+- We can write a python script to do this for us.
+  
+```
+from pwn import *
+connection = remote('titan.picoctf.net', 62345)
+response = connection.recvuntil('decrypt.')
+print(response.decode())
+payload = b'E' + b'\n'
+connection.send(payload)
+response = connection.recvuntil('keysize):')
+print(response.decode())
+payload = b'\x02' + b'\n'
+connection.send(payload)
+response = connection.recvuntil('ciphertext (m ^ e mod n)')
+response = connection.recvline()
+num=int(response.decode())*4228273471152570993857755209040611143227336245190875847649142807501848960847851973658239485570030833999780269457000091948785164374915942471027917017922546
+response = connection.recvuntil('decrypt.')
+print(response.decode())
+payload = b'D' + b'\n'
+connection.send(payload)
+response = connection.recvuntil('decrypt:')
+print(response.decode())
+connection.send(str(num)+'\n')
+response = connection.recvuntil('hex (c ^ d mod n):')
+print(response.decode())
+response = connection.recvline()
+print(response.decode())
+num=int(response,16)//2
+print(hex(num))
+hex_string=hex(num)[2:] 
+byte_array=bytes.fromhex(hex_string)
+print(byte_array.decode('ascii'))
+connection.close()
+```
+
+On running the script, we get output:
+
+```
+C:\Users\Aaditya\Desktop>python vim.py
+[x] Opening connection to titan.picoctf.net on port 62345
+[x] Opening connection to titan.picoctf.net on port 62345: Trying 3.139.174.234
+[+] Opening connection to titan.picoctf.net on port 62345: Done
+C:\Users\Aaditya\Desktop\vim.py:3: BytesWarning: Text is not bytes; assuming ASCII, no guarantees. See https://docs.pwntools.com/#bytes
+  response = connection.recvuntil('decrypt.')
+*****************************************
+****************THE ORACLE***************
+*****************************************
+what should we do for you?
+E --> encrypt D --> decrypt.
+C:\Users\Aaditya\Desktop\vim.py:7: BytesWarning: Text is not bytes; assuming ASCII, no guarantees. See https://docs.pwntools.com/#bytes
+  response = connection.recvuntil('keysize):')
+
+enter text to encrypt (encoded length must be less than keysize):
+C:\Users\Aaditya\Desktop\vim.py:11: BytesWarning: Text is not bytes; assuming ASCII, no guarantees. See https://docs.pwntools.com/#bytes
+  response = connection.recvuntil('ciphertext (m ^ e mod n)')
+C:\Users\Aaditya\Desktop\vim.py:14: BytesWarning: Text is not bytes; assuming ASCII, no guarantees. See https://docs.pwntools.com/#bytes
+  response = connection.recvuntil('decrypt.')
+
+what should we do for you?
+E --> encrypt D --> decrypt.
+C:\Users\Aaditya\Desktop\vim.py:18: BytesWarning: Text is not bytes; assuming ASCII, no guarantees. See https://docs.pwntools.com/#bytes
+  response = connection.recvuntil('decrypt:')
+
+Enter text to decrypt:
+C:\Users\Aaditya\Desktop\vim.py:20: BytesWarning: Text is not bytes; assuming ASCII, no guarantees. See https://docs.pwntools.com/#bytes
+  connection.send(str(num)+'\n')
+C:\Users\Aaditya\Desktop\vim.py:21: BytesWarning: Text is not bytes; assuming ASCII, no guarantees. See https://docs.pwntools.com/#bytes
+  response = connection.recvuntil('hex (c ^ d mod n):')
+ decrypted ciphertext as hex (c ^ d mod n):
+ c8c2607272
+
+0x6461303939
+da099
+[*] Closed connection to titan.picoctf.net port 62345
+
+C:\Users\Aaditya\Desktop>openssl enc -aes-256-cbc -d -in secret.enc -k da099
+*** WARNING : deprecated key derivation used.
+Using -iter or -pbkdf2 would be better.
+picoCTF{su((3ss_(r@ck1ng_r3@_da099d93}
+```
+
+- After running the script, we use the openssl command from the hint that is given, using the `da099` which is what we got from the script, as the key.
+- This gives us flag.
+
+## Flag:
+
+```
+picoCTF{su((3ss_(r@ck1ng_r3@_da099d93}
+```
+
+## Concepts learnt:
+
+- I learnt how RSA encryption works, and to use that knowledge to our advantage to exploit the way it works to achieve our goal.
+- I learnt that we can modify something that is blocked, get our output on that modified variable and then reverse the changes to get around filters.
+
+## Notes:
+
+- Took a long time to figure out.
+
+## Resources:
+
+- [wikipedia](https://en.wikipedia.org/wiki/RSA_cryptosystem)
+- [video](https://youtu.be/XsiwqgGourA?si=YgltnM-moKhWthco)
+
+
+***
+
 # 2. Custom Encryption
 
 Can you get sense of this code file and write the function that will decode the given encrypted file content. Find the encrypted file here flag_info and code file might be good to analyze and get the flag. 
