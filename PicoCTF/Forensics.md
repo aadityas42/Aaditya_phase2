@@ -4,19 +4,31 @@ Figure out how they moved the flag.
 
 ## Solution:
 
-- 
+- First, I opened the file using wireshark to analyse it. We can see TFTP traffic in the file, so I exported TFTP objects from the file and saved them.
+- These files consist of 3 images, 1 txt file called plan, another called instructions, and a program.deb file.
+- The contents of these files appear to be encrypted, so I used a decrypter to try and make some sense of the text, it turned out to be a ROT-13 cipher.
+- The text from the plan files reads out the following after decryption: "I USED THE PROGRAM AND HID IT WITH-DUE DILIGENCE. CHECK OUT THE PHOTOS"
+- The text from the instructions file reads out the following after decryption: "TFTP DOESNT ENCRYPT OUR TRAFFIC SO WE MUST DISGUISE OUR FLAG TRANSFER. FIGURE OUT A WAY TO HIDE THE FLAG AND I WILL CHECK BACK FOR THE PLAN"
+- So now we know we should check out the photos, and also we still have the program.deb file, which gives us the hint that we need to use a tool called steghide.
+- So, I installed steghide, and ran it for all the images using the passkey as "DUEDILIGENCE" from the hint in the plan file.
+- The third image gives us the flag.
 
-
+  ```
+  PS C:\Users\Aaditya\Desktop\picoCTF> steghide extract -sf ./picture3.bmp -p “DUEDILIGENCE”
+  wrote extracted data to "flag.txt".
+  ```
 
 ## Flag:
 
 ```
-
+picoCTF{h1dd3n_1n_pLa1n_51GHT_18375919}
 ```
 
 ## Concepts learnt:
 
--  
+-  I learnt how to extract objects from a file using wireshark by filtering based on type of data. 
+-  I learned what a ROT-13 cipher is.
+-  I learnt how to use steghide to decode text from images using steganography.
 
 ## Notes:
 
@@ -24,7 +36,7 @@ Figure out how they moved the flag.
 
 ## Resources:
 
-- 
+- [Decrypting the cipher](https://www.dcode.fr/cipher-identifier)
   
 
 ***
