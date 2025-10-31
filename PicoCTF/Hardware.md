@@ -15,7 +15,7 @@ As an example, entering x = 34359738368 gives (y0, ..., y11), so the flag would 
 ## Flag:
 
 ```
-nite{100010011000}}
+nite{100010011000}
 ```
 
 ## Concepts learnt:
