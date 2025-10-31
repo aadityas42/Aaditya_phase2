@@ -223,17 +223,18 @@ my friend recommended me this anime but i think i've heard a wrong name.
 
 - First, I opened up the file in gidhra to analyse it.
 - Then, we go to the memory location 0x68, from which we get to know what needs to be Xored
-- 
+- I was having some problems with gidhra so I switched to reko.
+- If we XOR all the bytes at 0x68 that is `F1 E3 E6 E6 F1 E3 DE F1 CD 94 D6 FA 94 D6 FA D6 CA C8 96 FA D6 94 C8 D5 C9 96 FA 91 D7 C1 D0 94 CB CA FA C3 94 D7 C8 D2 91 D7 C0 D8` with `0xA5` which we can tell from the main function, to get our flag.
 
 ## Flag:
 
 ```
-
+TFCCTF{Th1s_1s_som3_s1mpl3_4rdu1no_f1rmw4re}
 ```
 
 ## Concepts learnt:
 
-- I learned how to analyse complex files in gidhra.
+- I learned how to analyse complex files in reko.
 
 ## Notes:
 
