@@ -8,7 +8,7 @@ As an example, entering x = 34359738368 gives (y0, ..., y11), so the flag would 
 
 ## Solution:
 
-- We are given an image with a bunch of logic gates along with this description. So, since logic gates only take inputs of either 0 or 1, I converted the number to binary, which give us `111000011011110011010111011011110` which is 35 digits, so we pad it with a 0 at the start to have 36 inputs without changing the number itself.
+- We are given an image with a bunch of logic gates along with this description. So, since logic gates only take inputs of either 0 or 1, I converted the number to binary, which give us `11100011000101001000100101010101110` which is 35 digits, so we pad it with a 0 at the start to have 36 inputs without changing the number itself.
 - Next, I just plugged in the digits of this binary number into the corresponding x0,x1.. and so on inputs up to x35, and and used my knowledge of logic gates to solve the question.
 - This along with the formatting specified gave me the flag. 
 
