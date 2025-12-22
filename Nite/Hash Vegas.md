@@ -8,8 +8,8 @@
   Weak Hashing: The lottery uses a secret-prefix hash (H(secret∣∣data)). One of the allowed hashes is SHA-1, which is vulnerable to length-extension attacks.
 
 - Python uses the MT19937 algorithm. If you can observe 624 consecutive 32-bit outputs, you can "untemper" them to recover the entire internal state and predict every future "random" number.
-  Roulette: Each round leaks 256 bits (8 words). We play 64 times → 512 words.
-  lots: Each spin leaks two 32-bit values via fruit symbols. We spin 56 times → 112 words.
+  Roulette: Each round leaks 256 bits (8 words). We play 64 times -> 512 words.
+  lots: Each spin leaks two 32-bit values via fruit symbols. We spin 56 times -> 112 words.
   Total: 512+112=624 words. We now "own" the RNG.
 
 - Predicting the "Golden" Ticket
