@@ -2,7 +2,7 @@
 
 ## Solve
 
-- The challenge has a small neural network written in C which takes 15 float values as input, using which it computes a probbility, which on when matcheing the target value, will print the flag.
+- The challenge has a small neural network written in C which takes 15 float values as input, using which it computes a probability, which on when matching the target value, will print the flag.
 - The network has 3 layers, and the activation on input depends on index%4
 - i%4 == 0: xor_activate(x, key) converts x to an integer and XORs it with key and then converts it back to double.
 - i%4 == 1: tanh(x)
